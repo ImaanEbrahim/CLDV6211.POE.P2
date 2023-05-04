@@ -1,0 +1,176 @@
+CREATE DATABASE ride_you_rent_ST10021922
+
+create table Car_ST10021922(
+	CarNo varchar(50) NOT NULL,
+	CarMake varchar(50) NOT NULL,
+	Model varchar(50)  NOT NULL,
+	BodyType varchar(50) NOT NULL,
+	KilometersTravelled int NOT NULL,
+	ServiceKilometers int NOT NULL,
+	Available char(50) NOT NULL
+	CONSTRAINT Car_ie_2 UNIQUE (Model),
+	Constraint Car_pk Primary Key(CarNo)
+);
+
+create table Inspector_ST10021922(
+	Inspector_no varchar(50) NOT NULL,
+	first_name varchar(50) NOT NULL,
+	last_name varchar(50) NOT NULL,
+	email varchar(50) NOT NULL,
+	mobile char(10) NOT NULL
+	CONSTRAINT Inspector_ie_3 UNIQUE (email),
+	CONSTRAINT Inspector_ie_4 UNIQUE (mobile),
+	Constraint Inspector_pk Primary Key(Inspector_no)
+);
+
+create table Driver_ST10021922(
+	driver_id int identity(1,1) NOT NULL,
+	driver_firstname varchar(50) NOT NULL,
+	driver_lastname varchar(50) NOT NULL,
+	street_no int NOT NULL,
+	street_name varchar(50) NOT NULL,
+	suburb varchar(50) NOT NULL,
+	province varchar(50) NOT NULL,
+	postal_code char(4) NOT NULL,
+	email varchar(50) NOT NULL,
+	mobile char(10) NOT NULL,
+	Constraint Driver_ie_7 UNIQUE(email),
+	Constraint Driver_ei_8  UNIQUE(mobile),
+	Constraint Driver_pk Primary Key(driver_id)
+);
+
+create table Rental_ST10021922(
+	Rental_id int NOT NULL identity(1,1),
+	CarNo varchar(50) NOT NULL,
+	Inspector_no varchar(50) NOT NULL,
+	driver_id int NOT NULL,
+	RentalFee int NOT NULL,
+	startDate date NOT NULL,
+	EndDate date NOT NULL,
+	Constraint Rental_pk Primary Key(Rental_id)
+);
+
+create table Return_ST10021922(
+	Return_id int NOT NULL identity(1,1),
+	Carno varchar(50) NOT NULL,
+	Inspector_no varchar(50) NOT NULL,
+	driver_id int NOT NULL,
+	ReturnDate date NOT NULL,
+	ElapsedDate int NOT NULL,
+	Fineid int NOT NULL,
+	Constraint Return_pk Primary Key(Return_id)
+);
+
+create table fine_ST10021922(
+	fine_id int NOT NULL identity(1,1),
+	fine int NOT NULL,
+	Constraint Fine_pk Primary Key(fine_id)
+);
+
+/*Adding foreign keys*/
+ALTER TABLE Rental_ST10021922 ADD CONSTRAINT Rental_Car FOREIGN KEY (CarNo) REFERENCES Car_ST10021922(CarNo);
+ALTER TABLE Rental_ST10021922 ADD CONSTRAINT Rental_Driver FOREIGN KEY (driver_id) REFERENCES Driver_ST10021922(driver_id);
+ALTER TABLE Rental_ST10021922 ADD CONSTRAINT Rental_Inspector FOREIGN KEY (Inspector_no) REFERENCES  Inspector_ST10021922(Inspector_no);
+
+ALTER TABLE Return_ST10021922 ADD CONSTRAINT Return_Driver FOREIGN KEY (driver_id) REFERENCES Driver_ST10021922(driver_id);
+ALTER TABLE Return_ST10021922 ADD CONSTRAINT Return_Inspector FOREIGN KEY (Inspector_no) REFERENCES Inspector_ST10021922(Inspector_no);
+
+
+/*Car, Inspector, Driver, Rental, Return).*/
+INSERT INTO Car_ST10021922 (CarNo, CarMake, Model, BodyType, KilometersTravelled, ServiceKilometers, Available ) VALUES ('HYU001', 'Hyundai', 'Grand i10 1.0 Motion', 'Hatchback', 1500 ,5000, 'yes');
+INSERT INTO Car_ST10021922 (CarNo, CarMake, Model, BodyType, KilometersTravelled, ServiceKilometers, Available ) VALUES('HYU002', 'Hyundai', 'i20 1.2 Fluid', 'Hatchback', 3000, 15000, 'yes');
+INSERT INTO Car_ST10021922 (CarNo, CarMake, Model, BodyType, KilometersTravelled, ServiceKilometers, Available ) VALUES('BMW001', 'BMW', '320d 1.2' ,'Sedan ',20000, 50000, 'yes');
+INSERT INTO Car_ST10021922 (CarNo, CarMake, Model, BodyType, KilometersTravelled, ServiceKilometers, Available ) VALUES('BMW002', 'BMW', '240d 1.4', 'Sedan', 9500, 15000, 'yes');
+INSERT INTO Car_ST10021922 (CarNo, CarMake, Model, BodyType, KilometersTravelled, ServiceKilometers, Available ) VALUES('TOY001', 'Toyota', 'Corolla 1.0', 'Sedan', 15000, 50000, 'yes');
+INSERT INTO Car_ST10021922 (CarNo, CarMake, Model, BodyType, KilometersTravelled, ServiceKilometers, Available ) VALUES('TOY002', 'Toyota', 'Avanza 1.0', 'SUV' ,98000, 15000, 'yes' );
+INSERT INTO Car_ST10021922 (CarNo, CarMake, Model, BodyType, KilometersTravelled, ServiceKilometers, Available ) VALUES('TOY003', 'Toyota', 'Corolla Quest 1.0', 'Sedan',15000, 50000 , 'yes');
+INSERT INTO Car_ST10021922 (CarNo, CarMake, Model, BodyType, KilometersTravelled, ServiceKilometers, Available ) VALUES('MER001', 'Mercedes Benz', 'c180', 'Sedan', 5200, 15000 , 'yes');
+INSERT INTO Car_ST10021922 (CarNo, CarMake, Model, BodyType, KilometersTravelled, ServiceKilometers, Available ) VALUES('MER002', 'Mercedes Benz', 'A200 ', 'Sedan', 4080, 15000, 'yes');
+INSERT INTO Car_ST10021922  (CarNo, CarMake, Model, BodyType, KilometersTravelled, ServiceKilometers, Available ) VALUES('FOR001', 'Ford' , 'Fiesta 1.0', 'Sedan', 7600, 15000, 'yes');
+INSERT INTO Inspector_ST10021922 (Inspector_no, first_name, last_name, email, mobile )
+VALUES 
+('I101', 'Bud', 'Barnes', 'bud@therideyourent.com', '0821585359' ),
+('I102', 'Tracy' , 'Reeves', 'tracy@therideyourent.com','0822889988'),
+('I103',  'Sandra', 'Goodwin', 'sandra@therideyourent.com', '0837695468'),
+('I104', 'Shannon', 'Burke', 'shannon@therideyourent.com', '0836802514');
+
+INSERT INTO Driver_ST10021922(driver_firstname, driver_lastname, street_no, street_name, suburb, province, postal_code, email, mobile)
+VALUES 
+('Gabrielle', 'Clarke', 917,  'Heuvel St', 'Botshabelo', 'Free State', '9781', 'gorix10987@macauvpn.com', '0837113269'),
+('Geoffrey', 'Franklin', 1114 ,'Dorp St',  'Paarl', 'Western Cape', '7655', 'noceti8743@drlatvia.com ', '0847728052'),
+('Fawn', 'Cooke' , 2158,  'Prospect St', 'Garsfontein', 'Gauteng', '0042' , 'yegifav388@enamelme.com', '0821966584'),
+('Darlene', 'Peters', 2529,  'St. John Street', 'Somerset West',  'Western Cape', '7110',  'mayeka4267@macauvpn.com ', '0841221244'),
+('Vita', 'Soto' , 1474 ,'Wolmarans St',' Sundra', 'Mpumalanga', '2200' , 'wegog55107@drlatvia.com ', '0824567924'),
+('Opal', 'Rehbein', 697, 'Thutlwa St ', 'Letaba', 'Limpopo',  '0870', 'yiyow34505@enpaypal.com', '0826864938'),
+('Vernon', 'Hodgson', 1935 , 'Thutlwa St',  'Letsitele',  'Limpopo', '0885', 'gifeh11935@enamelme.com', '0855991446'),
+('Crispin', 'Wheatly', 330, 'Sandown Rd', 'Cape Town', 'Western Cape', '8018', 'likon78255@macauvpn.com', '0838347945'),
+('Melanie', 'Cunningham' , 616 , 'Loop St', 'Atlantis', 'Western Cape', '7350', 'sehapeb835@macauvpn.com' , '0827329001'),
+('Kevin', 'Peay', 814, 'Daffodil Dr', 'Elliotdale ', 'Eastern Cape ', '5118',' xajic53991@enpaypal.com', '0832077149');
+
+INSERT INTO Rental_ST10021922(CarNo, Inspector_no, driver_id, RentalFee, startDate,EndDate) VALUES ('HYU001','I101', 1 ,5000, '2021-08-30', '2021-08-31' ),
+('HYU002','I101',1,5000, '2021-09-01', '2021-09-10'),
+('FOR001', 'I101', 2 ,6500, '2021-09-01', '2021-09-10'),
+('BMW002','I102' , 5, 7000, '2021-09-20', '2021-09-25'),
+('TOY002', 'I102', 4, 5000, '2021-10-03', '2021-10-31'),
+('MER001','I103', 4, 8000, '2021-10-05', '2021-10-15'),
+('HYU002','I104', 7, 5000, '2021-12-01', '2022-02-10'),
+('TOY003','I104', 9, 5000, '2021-08-10', '2021-08-31');
+
+INSERT INTO Return_ST10021922(Carno, Inspector_no, driver_id, ReturnDate, ElapsedDate, Fineid) VALUES ('HYU001','I101', 1, '2021-08-31', 0, 0),
+('HYU002', 'I101', 1, '2021-09-10', 0, 1),
+('FOR001','I101', 2, '2021-09-10', 0, 2),
+('BMW002','I102', 5, '2021-09-30',5,3),
+('TOY002', 'I102',4,'2021-10-31', 2, 4),
+('MER001','I103' , 4, '2021-10-15', 1, 5),
+('HYU002','I104' , 7, '2022-02-10', 0, 6),
+('TOY003','I104',9, '2021-08-31', 0, 7);
+
+insert into fine_ST10021922(fine) values
+(0),
+(0),
+(2500),
+(1000),
+(500),
+(0),
+(0);
+
+select * from Car_ST10021922;
+
+select * from Inspector_ST10021922;
+
+select * from Driver_ST10021922;
+
+select * from Rental_ST10021922;
+
+select * from Return_sT10021922;
+
+/*Return all the rentals placed between the following dates “2021-08-01” AND “2021-10-30”. */
+select * from  Rental_ST10021922 where startDate between '2021-08-01' and '2021-10-30';
+
+/*selects all the rentals placed by Bud Barnes*/
+select * from  Rental_ST10021922 where Inspector_no='I101';
+
+/*Displays all the returns for the car make Toyota.*/
+select * from Return_ST10021922 left join Car_ST10021922 on Car_ST10021922.CarNo=Return_ST10021922.Carno  where CarMake='Toyota';
+
+/*Query that counts the number of rentals that were placed for the car make Hyundai.*/
+select count(Rental_id) from Rental_ST10021922 left join Car_ST10021922 on Car_ST10021922.CarNo =Rental_ST10021922.CarNo where CarMake='Hyundai';
+
+--Write a query to update the Model of the car with the CarNo FOR001 from “Fiesta” to “Focus”.--
+update Car_ST10021922 set Model='Focus' where CarNo='FOR001';
+select * from Car_ST10021922;
+
+--query that will display the CarNo, Driver Name, Rental Fee, Start Date, End Date and Availability of all available rentals--
+select Car_ST10021922.CarNo, driver_firstname, driver_lastname as driver_name, RentalFee, startDate, EndDate, Available 
+from  Rental_ST10021922 left join  Driver_ST10021922  on Driver_ST10021922.driver_id = Rental_ST10021922.driver_id 
+inner join Return_ST10021922 on Return_ST10021922.Return_id= Rental_ST10021922.Rental_id inner join Car_ST10021922 on Car_ST10021922.CarNo= Rental_ST10021922.CarNo;
+
+--query that will show a list of the available car makes in the database use the DISTINCT command--
+select distinct CarNo, CarMake, Model, BodyType, Available from Car_ST10021922 where Available='yes';
+
+/*A query that will determine the cars which will need service soon. If a car’s kilometres travelled is 9000 kilometres away from the service kilometres that would indicate that the car would need to get a service soon.*/
+select CarNo, CarMake, Model as carsThatNeedService_soon from Car_ST10021922 where (Car_ST10021922.ServiceKilometers - Car_ST10021922.KilometersTravelled) <=900;
+
+/*A query that will calculate the late fee for a return (a R500 a day fine is placed on rentals returned passed the elapsed return date. 
+The query should use the return date and the current/Today’s date to calculate the elapsed number of days and multiply those days by the R500 fine to get the total fine*/
+select Return_ST10021922.Carno,  DATEDIFF(day , Return_ST10021922.ReturnDate, cast(GETDATE() as date))*500 AS returnLateFee from Return_ST10021922;
